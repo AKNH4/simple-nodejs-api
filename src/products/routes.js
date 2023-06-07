@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 
 const products = new Map();
+
 products.set(0, {
   id: 0,
   name: "bottle",

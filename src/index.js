@@ -1,8 +1,17 @@
 const express = require("express");
+const database = require("./database/database");
+const { Model, UUID, UUIDV4, STRING, DECIMAL, INTEGER } = require("sequelize");
+const { CreateProduct } = require("./products/entities/product");
 
 require("dotenv").config({
-  path: "./.env",
+  path: "../.env",
 });
+
+(async () => {
+  CreateProduct(database);
+  await database.authenticate();
+  await database.sync();
+})();
 
 const PORT = process.env.PORT;
 
