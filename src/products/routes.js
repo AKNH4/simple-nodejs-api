@@ -1,47 +1,22 @@
 const express = require("express");
 const { Products } = require("./entities/product");
+
+const postHandler = require("./handlers/postHandler");
+const getByIdHandler = require("./handlers/getByIdHandler");
+const getAllHandler = require("./handlers/getAllHandler");
+const updateByIdHandler = require("./handlers/updateByIdHandler");
+const deleteByIdHandler = require("./handlers/deleteByIdHandler");
+
 const router = express.Router();
-const { ValidationError } = require("sequelize");
-const { mapSequelizeError } = require("../utils/sequelizeErrorMapper");
 
-router.get("/", async (req, res) => {
-  const products = await Products.findAll();
-  return res.json(products);
-});
+router.get("/", getAllHandler);
 
-router.get("/:id", async (req, res) => {
-  const product = await Products.findByPk(req.params.id);
-  if (!product) return res.sendStatus(404);
+router.get("/:id", getByIdHandler);
 
-  return res.json(product);
-});
+router.post("/", postHandler);
 
-router.post("/", async (req, res) => {
-  try {
-    const newProduct = await Products.create({ ...req.body, id: undefined });
-    return res.status(201).send(newProduct.id);
-  } catch (e) {
-    if (e instanceof ValidationError) {
-      return res.json(mapSequelizeError(e));
-    }
-  }
-});
+router.put("/:id", updateByIdHandler);
 
-router.put("/:id", async (req, res) => {
-  const { id } = req.params;
-  const product = await Products.findByPk(id);
-  if (!product) return res.status(404);
-
-  await product.update({ ...req.body });
-  return res.status(200).send(product.id);
-});
-
-router.delete("/:id", async (req, res) => {
-  const { id } = req.params;
-  const product = await Products.findByPk(id);
-  await product.destroy();
-
-  return res.status(200).send(product.id);
-});
+router.delete("/:id", deleteByIdHandler);
 
 module.exports = router;
