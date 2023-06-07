@@ -20,5 +20,5 @@ const database = new Sequelize({
   username: DB_USERNAME,
   password: DB_PASSWORD,
 });
-
+database.define;
 module.exports = database;

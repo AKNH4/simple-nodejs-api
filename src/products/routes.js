@@ -1,61 +1,47 @@
-"use strict";
 const express = require("express");
-
+const { Products } = require("./entities/product");
 const router = express.Router();
+const { ValidationError } = require("sequelize");
+const { mapSequelizeError } = require("../utils/sequelizeErrorMapper");
 
-const products = new Map();
-
-products.set(0, {
-  id: 0,
-  name: "bottle",
-  price: 2.99,
-  quantity_available: 100,
+router.get("/", async (req, res) => {
+  const products = await Products.findAll();
+  return res.json(products);
 });
 
-function getProducts() {
-  const toReturn = [];
-  for (let product of products.values()) {
-    toReturn.push(product);
+router.get("/:id", async (req, res) => {
+  const product = await Products.findByPk(req.params.id);
+  if (!product) return res.sendStatus(404);
+
+  return res.json(product);
+});
+
+router.post("/", async (req, res) => {
+  try {
+    const newProduct = await Products.create({ ...req.body, id: undefined });
+    return res.status(201).send(newProduct.id);
+  } catch (e) {
+    if (e instanceof ValidationError) {
+      return res.json(mapSequelizeError(e));
+    }
   }
-
-  return toReturn;
-}
-
-router.get("/", (req, res) => {
-  console.log(products.values());
-
-  return res.json(getProducts());
 });
 
-router.post("/", (req, res) => {
-  const id = Date.now();
-  const product = { ...req.body, id };
-  products.set(id, product);
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const product = await Products.findByPk(id);
+  if (!product) return res.status(404);
 
-  return res.json(product).status(201);
+  await product.update({ ...req.body });
+  return res.status(200).send(product.id);
 });
 
-router.put("/:id", (req, res) => {
-  const id = Number.parseInt(req.params.id);
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  const product = await Products.findByPk(id);
+  await product.destroy();
 
-  if (!products.has(id)) return res.sendStatus(400);
-
-  const product = products.get(id);
-  const newProd = { ...product, ...req.body };
-
-  products.set(product.id, newProd);
-
-  return res.sendStatus(204);
-});
-
-router.delete("/:id", (req, res) => {
-  const id = Number.parseInt(req.params.id);
-
-  if (!products.has(id)) return res.sendStatus(400);
-
-  products.delete(id);
-
-  return res.sendStatus(204);
+  return res.status(200).send(product.id);
 });
 
 module.exports = router;
