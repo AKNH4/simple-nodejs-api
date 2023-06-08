@@ -1,15 +1,8 @@
-const {
-  UUID,
-  UUIDV4,
-  STRING,
-  DECIMAL,
-  INTEGER,
-  Model,
-  FLOAT,
-} = require("sequelize");
+const { UUID, UUIDV4, STRING, INTEGER, Model, FLOAT } = require("sequelize");
+
 class Products extends Model {}
 
-function CreateProduct(sequelize) {
+function registerProducts(sequelize) {
   Products.init(
     {
       id: {
@@ -30,6 +23,8 @@ function CreateProduct(sequelize) {
         },
       },
       price: {
+        type: STRING,
+        allowNull: true,
         type: FLOAT(6),
         allowNull: false,
         validate: {
@@ -51,4 +46,4 @@ function CreateProduct(sequelize) {
     { sequelize, tableName: "products", createdAt: false, updatedAt: false }
   );
 }
-module.exports = { CreateProduct, Products };
+module.exports = { registerProducts, Products };

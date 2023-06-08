@@ -6,6 +6,8 @@ const getByIdHandler = require("./handlers/getByIdHandler");
 const getAllHandler = require("./handlers/getAllHandler");
 const updateByIdHandler = require("./handlers/updateByIdHandler");
 const deleteByIdHandler = require("./handlers/deleteByIdHandler");
+const jwtMiddleware = require("../users/utils/jwtMiddleware");
+const roleMiddleware = require("../users/utils/roleMiddleware");
 
 const router = express.Router();
 
@@ -13,10 +15,15 @@ router.get("/", getAllHandler);
 
 router.get("/:id", getByIdHandler);
 
-router.post("/", postHandler);
+router.post("/", jwtMiddleware, roleMiddleware("ADMIN"), postHandler);
 
-router.put("/:id", updateByIdHandler);
+router.put("/:id", jwtMiddleware, roleMiddleware("ADMIN"), updateByIdHandler);
 
-router.delete("/:id", deleteByIdHandler);
+router.delete(
+  "/:id",
+  jwtMiddleware,
+  roleMiddleware("ADMIN"),
+  deleteByIdHandler
+);
 
 module.exports = router;

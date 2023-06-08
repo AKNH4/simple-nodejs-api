@@ -1,4 +1,4 @@
-function mapSequelizeError(exception) {
+function mapSequelizeErrors(exception) {
   const errors = exception.errors.map((error) => ({
     [error.path]: error.message,
   }));
@@ -6,4 +6,4 @@ function mapSequelizeError(exception) {
   return errors;
 }
 
-module.exports = { mapSequelizeError };
+module.exports = { mapSequelizeErrors };
