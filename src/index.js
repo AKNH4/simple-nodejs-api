@@ -4,7 +4,7 @@ const { registerProducts } = require("./products/entities/product");
 const { registerUsers } = require("./users/entities/user");
 
 require("dotenv").config({
-  path: "../.env",
+  path: "dev.env",
 });
 
 (async () => {
