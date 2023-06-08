@@ -16,6 +16,11 @@ module.exports = async (req, res, next) => {
 
   const user = await Users.findByPk(sub);
 
+  if (!user)
+    return res.status(401).json({
+      error: "Token not valid anymore",
+    });
+
   req.user = { ...user.dataValues, password: undefined };
 
   next();
