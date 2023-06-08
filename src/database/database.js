@@ -3,7 +3,7 @@ const { Sequelize } = require("sequelize");
 const { Model, UUID, UUIDV4, STRING, DECIMAL, INTEGER } = require("sequelize");
 
 require("dotenv").config({
-  path: "./.env",
+  path: "dev.env",
 });
 
 const DB_PORT = process.env.DB_PORT;
