@@ -22,6 +22,7 @@
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.1",
     "dotenv": "^16.1.4",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "sequelize-cli": "^6.6.1"
   }
 }
