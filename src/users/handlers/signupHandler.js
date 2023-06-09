@@ -5,7 +5,7 @@ const { ValidationError } = require("sequelize");
 const createJwt = require("../utils/createJwt");
 const mapUser = require("../utils/mapUser");
 const mapToSignupResponse = require("../mappers/mapToSignupResponse");
-const { ContactInfos } = require("../entities/contactinfos");
+const { ContactInfos } = require("../entities/contactInfos");
 
 module.exports = async (req, res) => {
   const { email, password } = req.body;
@@ -17,7 +17,6 @@ module.exports = async (req, res) => {
     });
 
   const hashedPassword = await hashPassword(password);
-  // console.log(email, password);
 
   try {
     var newUser = await Users.create({

@@ -30,12 +30,12 @@ module.exports = (database) => {
   Products.belongsToMany(Categories, { through: ProductCategories });
   Categories.belongsToMany(Products, { through: ProductCategories });
 
-  ContactInfos.hasMany(PhoneNumbers);
-  PhoneNumbers.belongsTo(ContactInfos);
-
   Users.hasOne(ContactInfos);
-  ContactInfos.belongsTo(Users);
+  ContactInfos.belongsTo(Users, { onDelete: "CASCADE" });
+
+  ContactInfos.hasMany(PhoneNumbers);
+  PhoneNumbers.belongsTo(ContactInfos, { onDelete: "CASCADE" });
 
   ContactInfos.hasOne(Addresses);
-  Addresses.belongsTo(ContactInfos);
+  Addresses.belongsTo(ContactInfos, { onDelete: "CASCADE" });
 };

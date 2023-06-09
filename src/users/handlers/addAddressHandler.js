@@ -1,7 +1,7 @@
 const { ValidationError } = require("sequelize");
 const { mapSequelizeErrors } = require("../../utils/sequelizeErrorMapper");
 const { Addresses } = require("../entities/addresses");
-const { ContactInfos } = require("../entities/contactinfos");
+const { ContactInfos } = require("../entities/contactInfos");
 const mapToAddressResponse = require("../mappers/mapToAddressResponse");
 
 module.exports = async (req, res) => {

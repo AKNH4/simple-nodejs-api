@@ -1,5 +1,5 @@
 const { mapSequelizeErrors } = require("../../utils/sequelizeErrorMapper");
-const { ContactInfos } = require("../entities/contactinfos");
+const { ContactInfos } = require("../entities/contactInfos");
 const { PhoneNumbers } = require("../entities/phoneNumbers");
 const { ValidationError } = require("sequelize");
 const mapToPhoneNumberResponse = require("../mappers/mapToPhoneNumberResponse");
@@ -7,18 +7,20 @@ const mapToPhoneNumberResponse = require("../mappers/mapToPhoneNumberResponse");
 module.exports = async (req, res) => {
   const { phonenumber } = req.body;
 
+  const userId = req.user.id;
+
+  const contactInfo = await ContactInfos.findOne({
+    where: { userId },
+  });
+
   const doesPhoneNumberExists = await PhoneNumbers.findOne({
-    where: { phonenumber },
+    where: { phonenumber, contactInfoId: contactInfo.id },
   });
 
   if (doesPhoneNumberExists)
     return res.status(400).json({
       error: "Phonenumber does already exist",
     });
-
-  const contactInfo = await ContactInfos.findOne({
-    where: { userId: req.user.id },
-  });
 
   try {
     var newPhoneNumber = await PhoneNumbers.create({

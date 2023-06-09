@@ -6,5 +6,7 @@ module.exports = ({ id, phonenumbers, address }) => ({
   phonenumbers: phonenumbers
     .map((phonenumber) => mapToPhoneNumberResponse(phonenumber))
     .map((p) => p.phonenumber),
-  address: mapToAddressResponse(address),
+  address: mapToAddressResponse(
+    address || { postCode: "", city: "", country: "" }
+  ),
 });
