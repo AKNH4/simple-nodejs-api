@@ -8,6 +8,7 @@ const updateByIdHandler = require("./handlers/updateByIdHandler");
 const deleteByIdHandler = require("./handlers/deleteByIdHandler");
 const jwtMiddleware = require("../users/utils/jwtMiddleware");
 const roleMiddleware = require("../users/utils/roleMiddleware");
+const postCategoryHandler = require("./handlers/postCategoryHandler");
 
 const router = express.Router();
 
@@ -24,6 +25,13 @@ router.delete(
   jwtMiddleware,
   roleMiddleware("ADMIN"),
   deleteByIdHandler
+);
+
+router.post(
+  "/:id/category",
+  jwtMiddleware,
+  roleMiddleware("ADMIN"),
+  postCategoryHandler
 );
 
 module.exports = router;

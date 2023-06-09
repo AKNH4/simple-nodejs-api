@@ -1,15 +1,13 @@
 const express = require("express");
 const database = require("./database/database");
-const { registerProducts } = require("./products/entities/product");
-const { registerUsers } = require("./users/entities/user");
+const registerEntities = require("./database/registerEntities");
 
 require("dotenv").config({
   path: "dev.env",
 });
 
 (async () => {
-  registerProducts(database);
-  registerUsers(database);
+  registerEntities(database);
   await database.authenticate();
   await database.sync();
 })();
