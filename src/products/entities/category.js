@@ -19,7 +19,7 @@ function registerCategories(sequelize) {
     {
       sequelize,
       tableName: "categories",
-      createdAt: false,
+      createdAt: true,
       updatedAt: false,
       modelName: "categories",
     }

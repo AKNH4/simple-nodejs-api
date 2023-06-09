@@ -17,8 +17,10 @@ const PORT = process.env.PORT;
 const app = express();
 app.use(express.json());
 
-app.use("/products", require("./products/routes"));
-app.use("/users", require("./users/routes"));
+// app.use("/products", require("./products/routes"));
+// app.use("/users", require("./users/routes"));
+
+app.use("/", require("./products/routes"), require("./users/routes"));
 
 app.listen(PORT, "0.0.0.0", () =>
   console.log(`Server listening on port ${PORT}`)

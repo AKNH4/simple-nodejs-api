@@ -9,29 +9,38 @@ const deleteByIdHandler = require("./handlers/deleteByIdHandler");
 const jwtMiddleware = require("../users/utils/jwtMiddleware");
 const roleMiddleware = require("../users/utils/roleMiddleware");
 const postCategoryHandler = require("./handlers/postCategoryHandler");
+const apiRoutes = require("../core/apiRoutes");
+const addCategoryToProductHandler = require("./handlers/addCategoryToProductHandler");
 
 const router = express.Router();
 
-router.get("/", getAllHandler);
+router.get(apiRoutes.products.getAll, getAllHandler);
 
-router.get("/:id", getByIdHandler);
+router.get(apiRoutes.products.getById, getByIdHandler);
 
 router.post("/", jwtMiddleware, roleMiddleware("ADMIN"), postHandler);
 
-router.put("/:id", jwtMiddleware, roleMiddleware("ADMIN"), updateByIdHandler);
+router.put(
+  apiRoutes.products.updateById,
+  jwtMiddleware,
+  roleMiddleware("ADMIN"),
+  updateByIdHandler
+);
 
 router.delete(
-  "/:id",
+  apiRoutes.products.deletebyId,
   jwtMiddleware,
   roleMiddleware("ADMIN"),
   deleteByIdHandler
 );
 
 router.post(
-  "/:id/category",
+  apiRoutes.products.addCategory,
   jwtMiddleware,
-  roleMiddleware("ADMIN"),
-  postCategoryHandler
+  // roleMiddleware("ADMIN"),
+  addCategoryToProductHandler
 );
+
+router.post(apiRoutes.categories.post, jwtMiddleware, postCategoryHandler);
 
 module.exports = router;

@@ -4,12 +4,17 @@ const {
   registerCategories,
   Categories,
 } = require("../products/entities/category");
+const {
+  registerProductCategories,
+  ProductCategories,
+} = require("../products/entities/productCategories");
 
 module.exports = (database) => {
   registerProducts(database);
   registerUsers(database);
   registerCategories(database);
+  registerProductCategories(database);
 
-  Products.hasMany(Categories);
-  Categories.belongsTo(Products);
+  Products.belongsToMany(Categories, { through: ProductCategories });
+  Categories.belongsToMany(Products, { through: ProductCategories });
 };

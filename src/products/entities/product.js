@@ -43,7 +43,13 @@ function registerProducts(sequelize) {
         },
       },
     },
-    { sequelize, tableName: "products", createdAt: false, updatedAt: false }
+    {
+      sequelize,
+      tableName: "products",
+      createdAt: false,
+      updatedAt: false,
+      modelName: "products",
+    }
   );
 }
 module.exports = { registerProducts, Products };
