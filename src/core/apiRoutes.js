@@ -12,7 +12,10 @@ module.exports = {
   },
   users: {
     getUser: "/users",
-    signup: "/signup",
-    login: "/login",
+    signup: "/auth/signup",
+    login: "/auth/login",
+    addPhoneNumber: "/users/me/contacts/phonenumber",
+    addAddress: "/users/me/contacts/address",
+    getContactInfo: "/users/me/contacts",
   },
 };

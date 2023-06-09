@@ -2,6 +2,7 @@ const checkPassword = require("../utils/checkPassword");
 const { Users } = require("../entities/user");
 const createJwt = require("../utils/createJwt");
 const mapUser = require("../utils/mapUser");
+const mapToLoginResponse = require("../mappers/mapToLoginResponse");
 
 module.exports = async (req, res) => {
   const { email, password } = req.body;
@@ -13,5 +14,5 @@ module.exports = async (req, res) => {
   if (!passwordMatch) return res.sendStatus(401);
 
   const token = createJwt(mapUser(user), user.id);
-  return res.json({ token });
+  return res.json(mapToLoginResponse(token));
 };

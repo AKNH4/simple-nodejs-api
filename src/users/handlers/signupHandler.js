@@ -4,6 +4,8 @@ const { Users } = require("../entities/user");
 const { ValidationError } = require("sequelize");
 const createJwt = require("../utils/createJwt");
 const mapUser = require("../utils/mapUser");
+const mapToSignupResponse = require("../mappers/mapToSignupResponse");
+const { ContactInfos } = require("../entities/contactinfos");
 
 module.exports = async (req, res) => {
   const { email, password } = req.body;
@@ -18,17 +20,18 @@ module.exports = async (req, res) => {
   // console.log(email, password);
 
   try {
-    const newUser = await Users.create({
+    var newUser = await Users.create({
       email,
       password: hashedPassword,
     });
-
-    const token = createJwt(mapUser(newUser), newUser.id);
-
-    return res.json({ token });
   } catch (e) {
     if (e instanceof ValidationError) {
       return res.json(mapSequelizeErrors(e));
     }
   }
+
+  await ContactInfos.create({ userId: newUser.id });
+
+  const token = createJwt(mapUser(newUser), newUser.id);
+  return res.json(mapToSignupResponse(token));
 };

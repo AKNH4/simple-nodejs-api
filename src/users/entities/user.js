@@ -36,7 +36,7 @@ function registerUsers(sequelize) {
         defaultValue: "USER",
       },
     },
-    { sequelize, tableName: "users", updatedAt: false }
+    { sequelize, tableName: "users", updatedAt: false, modelName: "user" }
   );
 }
 
